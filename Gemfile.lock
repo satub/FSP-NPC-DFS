@@ -1,0 +1,23 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    bloomfilter-rb (2.1.1)
+      redis
+    colorize (0.8.1)
+    decisiontree (0.5.0)
+    highscore (1.2.0)
+      bloomfilter-rb (>= 2.1.1)
+      whatlanguage (>= 1.0.0)
+    redis (3.3.1)
+    whatlanguage (1.0.6)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  colorize
+  decisiontree
+  highscore
+
+BUNDLED WITH
+   1.12.5
