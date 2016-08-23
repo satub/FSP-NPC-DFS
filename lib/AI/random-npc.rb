@@ -5,7 +5,7 @@ class RandomNPC < NPC
 
   def initialize
     @name = Faker::Name.name
-    @personality = ["friendly", "suspicious", "hostile"].sample
+    @personality = rand(100)
     @converse = NPC.information_hash
   end
 

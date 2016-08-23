@@ -8,7 +8,7 @@ class Decide
   def initialize(attributes, training_data)
     @attributes = attributes
     @training_data = training_data
-    dec_tree = DecisionTree::ID3Tree.new(attributes, training_data, 1, :discrete)
+    dec_tree = DecisionTree::ID3Tree.new(attributes, training_data, 1, :continuous)
     dec_tree.train
     @decision = dec_tree
   end

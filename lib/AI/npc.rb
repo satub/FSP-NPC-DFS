@@ -31,31 +31,41 @@ module AI
 
     def self.training_data
       training_data = [
-        ["good", "friendly", "high", 1],
-        ["good", "suspicious","high", 1],
-        ["good", "hostile", "high", 1],
-        ["good", "friendly", "med", 1],
-        ["good", "suspicious","med", 1],
-        ["good", "hostile", "med", 0],
-        ["good", "friendly", "low", 1],
-        ["good", "suspicious","low", 0],
-        ["good", "hostile", "low", 0],
-        ["neutral", "friendly", "high", 1],
-        ["neutral", "suspicious","high", 1],
-        ["neutral", "hostile", "high", 0],
-        ["neutral", "friendly", "low", 1],
-        ["neutral", "suspicious","low", 0],
-        ["neutral", "hostile", "low", 0],
-        ["poor", "friendly", "high", 1],
-        ["poor", "suspicious","high", 0],
-        ["poor", "hostile", "high", 0],
-        ["poor", "friendly", "low", 0],
-        ["poor", "suspicious","medium", 0],
-        ["poor", "hostile", "medium", 0]]
+        [rand(66..100), rand(66..100), 2, 1],
+        [rand(66..100), rand(33..66),2, 1],
+        [rand(66..100), rand(0..33), 2, 1],
+        [rand(66..100), rand(66..100), 1, 1],
+        [rand(66..100), rand(33..66),1, 1],
+        [rand(66..100), rand(0..33), 1, 0],
+        [rand(66..100), rand(66..100), 0, 1],
+        [rand(66..100), rand(33..66),0, 0],
+        [rand(66..100), rand(0..33), 0, 0],
+        [rand(33..66), rand(66..100), 2, 1],
+        [rand(33..66), rand(33..66),2, 1],
+        [rand(33..66), rand(0..33), 2, 0],
+        [rand(33..66), rand(66..100), 0, 1],
+        [rand(33..66), rand(33..66),0, 0],
+        [rand(33..66), rand(0..33), 0, 0],
+        [rand(0..33), rand(66..100), 2, 1],
+        [rand(0..33), rand(33..66),2, 0],
+        [rand(0..33), rand(0..33), 2, 0],
+        [rand(0..33), rand(66..100), 0, 0],
+        [rand(0..33), rand(33..66),1, 0],
+        [rand(0..33), rand(0..33), 1, 0]]
       end
 
       def self.attributes
         ["hero_reputation", "npc_personality", "speech_score"]
+      end
+
+      def current_mood
+        case personality
+        when (0..20) then "brutally hostile"
+        when (21..40) then "rather unpleasant"
+        when (41..60) then "somewhat suspicious"
+        when (61..80) then "carefree"
+        when (81..100) then "hysterically happy"
+        end
       end
 
   end

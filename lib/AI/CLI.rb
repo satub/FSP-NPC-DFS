@@ -10,13 +10,12 @@ module AI
     end
 
     def run
-      puts "You are a hero called #{hero.name}. You approach a #{npc.personality} person named #{npc.name} and say:"
+      puts "You are #{hero.current_reputation} hero called #{hero.name}. You approach a #{npc.current_mood} person named #{npc.name} and say:"
       decide(gets.chomp)
     end
 
     def decide(response)
       al = AI::Analyze.new(response)
-      # puts al.sum_score
       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
       decision.decision(hero, npc, al) == 1 ? informative(response) : rude
         #this needs to be abstracted!
@@ -40,7 +39,6 @@ module AI
 
       def rude
         curse = NPC.information_hash[:curses].sample
-        # binding.pry
         puts "#{npc.name} says:"
         puts "#{curse}".colorize(:red)
       end

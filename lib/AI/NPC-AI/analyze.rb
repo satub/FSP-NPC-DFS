@@ -30,11 +30,11 @@ class Analyze
 
   def sum_score
     if whitelist_score > blacklist_score + score
-      "high"
+      2
     elsif blacklist_score <= score
-      "low"
+      0
     else
-      "med"
+      1
     end
   end
 
