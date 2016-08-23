@@ -3,6 +3,7 @@ GEM
   specs:
     bloomfilter-rb (2.1.1)
       redis
+    coderay (1.1.1)
     colorize (0.8.1)
     decisiontree (0.5.0)
     faker (1.6.3)
@@ -11,7 +12,13 @@ GEM
       bloomfilter-rb (>= 2.1.1)
       whatlanguage (>= 1.0.0)
     i18n (0.7.0)
+    method_source (0.8.2)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
     redis (3.3.1)
+    slop (3.6.0)
     whatlanguage (1.0.6)
 
 PLATFORMS
@@ -22,6 +29,7 @@ DEPENDENCIES
   decisiontree
   faker
   highscore
+  pry
 
 BUNDLED WITH
    1.12.5

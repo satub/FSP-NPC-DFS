@@ -2,10 +2,15 @@ module AI
 
   class CLI
 
-    def initialize
+  attr_accessor :npc, :hero
+
+    def initialize(npc = RandomNPC.new, hero = Hero.new)
+      @npc = npc
+      @hero = hero
     end
 
     def run
+      binding.pry
     end
 
   end
