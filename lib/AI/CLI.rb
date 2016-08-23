@@ -23,7 +23,7 @@ module AI
       end
 
       def informative(response)
-        blaab = response.gsub(/\W+/,"").downcase!
+        blaab = response.gsub(/\W+/,"").downcase
         ##This keyword hunting needs to obviously be moved into the analyze class...why am I even typing it in here?
         answers = NPC.information_hash[:information].keys.collect do |key_word|
           blaab.scan(key_word.to_s)
