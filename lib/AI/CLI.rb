@@ -29,7 +29,6 @@ module AI
 
       def rude
         index = NPC.information_hash[:curses].sample
-        binding.pry
         puts "#{npc.name} says:"
         puts "#{NPC.information_hash[:curses][index]}".colorize(:red)
       end
