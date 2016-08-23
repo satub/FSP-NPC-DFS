@@ -1,8 +1,7 @@
-require_relative 'hero.rb'
-require_relative 'npc.rb'
-require_relative 'analyze.rb'
-require_relative 'decide.rb'
-require 'colorize'
+require_relative 'AI/hero.rb'
+require_relative 'AI/npc.rb'
+require_relative 'AI/NPC-AI/analyze.rb'
+require_relative 'AI/NPC-AI/decide.rb'
 
 information_hash = {
   :information => {
@@ -17,6 +16,7 @@ information_hash = {
 }
 
 attributes = ["hero_reputation", "npc_personality", "speech_score"]
+
 training_data = [
   ["good", "friendly", "high", 1],
   ["good", "suspicious","high", 1],
@@ -41,16 +41,16 @@ training_data = [
   ["poor", "hostile", "medium", 0]]
 
 
-  hero = Hero.new("Sal")
-  npc = NPC.new("Murry Fisherman", "suspicious", information_hash)
+  hero = AI::Hero.new("Sal")
+  npc = AI::NPC.new("Murry Fisherman", "suspicious", information_hash)
   puts "A hero called #{hero.name} approaches a #{npc.personality} #{npc.name} and says:"
   phrase = "Excuse me, sir, could you please tell me where the lighthouse is?"
   # phrase = "Hey babe, tell me where in the fuck the lighthouse is?"
   # phrase = "Hey you jerk! Tell me where that crap of a lighthouse is, you idiot or I'll kill you!"
   puts phrase.colorize(:blue)
-  al = Analyze.new(phrase)
+  al = AI::Analyze.new(phrase)
   # puts al.sum_score
-  decision = Decide.new(attributes, training_data)
+  decision = AI::Decide.new(attributes, training_data)
   if decision.decision(hero, npc, al) == 1
     #this needs to be abstracted!
     puts "#{npc.name} answers:"

@@ -52,7 +52,27 @@ class NPC
       ["poor", "friendly", "low", 0],
       ["poor", "suspicious","medium", 0],
       ["poor", "hostile", "medium", 0]]
+    end
+
+    def self.attributes
+      ["hero_reputation", "npc_personality", "speech_score"]
+    end
+
+    def self.information_hash
+      information_hash = {
+        :information => {
+          :lighthouse => "It's to the South.",
+          :monsters => "There are no such things, just angels.",
+          :king => "Asshole, like all the other blue-bloods."
+        },
+        :greetings => ["Hello", "Good day", "Well met"],
+        :curses => ["Bugger off, nuisance!", "You are not worthy of our time", "Begone, you foul slime-ball!"],
+        :smalltalk => ["Lovely weather, isn't it?", "Oh really?", "I'm afraid it is going to rain", "Have you tried the autumn apples?"],
+        :farewells => ["Take care!", "Goodbye!", "May light shine on your path"]
+      }
     end 
+
+
 
 end
 

@@ -1,5 +1,3 @@
-require 'decisiontree'
-
 module AI
 
 class Decide
@@ -21,4 +19,4 @@ class Decide
   end
 end
 
-end 
+end

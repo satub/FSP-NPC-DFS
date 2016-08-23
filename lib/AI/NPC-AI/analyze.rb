@@ -1,6 +1,3 @@
-require 'highscore'
-require 'pry'
-
 module AI
 
 class Analyze
@@ -10,8 +7,8 @@ class Analyze
   #the blacklist and whitelist attributes should be fed as objects
   def initialize(text)
     @text = Highscore::Content.new(text)
-    @blacklist = Highscore::Blacklist.load_file "data/blacklist.txt"
-    @whitelist = Highscore::Whitelist.load_file "data/whitelist.txt"
+    @blacklist = Highscore::Blacklist.load_file "lib/AI/NPC-AI/data/blacklist.txt"
+    @whitelist = Highscore::Whitelist.load_file "lib/AI/NPC-AI/data/whitelist.txt"
   end
 
   def whitelist_score
@@ -43,7 +40,7 @@ class Analyze
 
 end
 
-end 
+end
 # al = Analyze.new("Excuse me, sir, could you please tell me where the lighthouse is?")
 # puts al.whitelist_score
 # puts al.blacklist_score
