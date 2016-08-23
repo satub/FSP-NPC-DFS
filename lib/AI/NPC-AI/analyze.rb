@@ -1,6 +1,8 @@
 require 'highscore'
 require 'pry'
 
+module AI
+
 class Analyze
 
   attr_accessor :text, :blacklist, :whitelist
@@ -32,7 +34,7 @@ class Analyze
   def sum_score
     if whitelist_score > blacklist_score + score
       "high"
-    elsif blacklist_score <= score 
+    elsif blacklist_score <= score
       "low"
     else
       "med"
@@ -40,6 +42,8 @@ class Analyze
   end
 
 end
+
+end 
 # al = Analyze.new("Excuse me, sir, could you please tell me where the lighthouse is?")
 # puts al.whitelist_score
 # puts al.blacklist_score

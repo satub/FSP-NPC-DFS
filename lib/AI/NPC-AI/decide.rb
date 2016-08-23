@@ -1,5 +1,7 @@
 require 'decisiontree'
 
+module AI
+
 class Decide
 
   attr_reader :training_data, :attributes
@@ -18,3 +20,5 @@ class Decide
     decision = @decision.predict(trial)
   end
 end
+
+end 

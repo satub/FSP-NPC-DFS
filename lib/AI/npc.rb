@@ -1,3 +1,9 @@
+require_relative "NPC-AI/analyze"
+require_relative "NPC-AI/decide"
+
+
+module AI
+
 class NPC
   attr_reader :name, :personality, :information
 
@@ -8,5 +14,7 @@ class NPC
     @personality = personality
     @converse = information_hash
   end
+
+end
 
 end

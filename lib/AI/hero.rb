@@ -1,3 +1,5 @@
+module AI
+
 class Hero
   attr_accessor :reputation, :hp, :mp
   attr_reader :name
@@ -9,5 +11,9 @@ class Hero
     @mp = 100
   end
 
+  def test
+  end
 
 end
+
+end 
