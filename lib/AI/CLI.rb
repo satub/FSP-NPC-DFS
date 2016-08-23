@@ -18,20 +18,31 @@ module AI
       al = AI::Analyze.new(response)
       # puts al.sum_score
       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
-      decision.decision(hero, npc, al) == 1 ? informative : rude
+      decision.decision(hero, npc, al) == 1 ? informative(response) : rude
         #this needs to be abstracted!
       end
 
-      def informative
-        puts "#{npc.name} answers:"
-        puts "#{NPC.information_hash[:information][:lighthouse]}".colorize(:green)
+      def informative(response)
+        blaab = response.gsub(/\W+/,"").downcase!
+        ##This keyword hunting needs to obviously be moved into the analyze class...why am I even typing it in here?
+        answers = NPC.information_hash[:information].keys.collect do |key_word|
+          blaab.scan(key_word.to_s)
+        end
+        if !answers.flatten.uniq.empty?
+          puts "#{npc.name} answers:"
+          answers.flatten.uniq.each { |answer| puts "#{answer.to_sym.capitalize}? #{NPC.information_hash[:information][answer.to_sym]}".colorize(:green)}
+        else
+          evasive = NPC.information_hash[:smalltalk].sample
+          puts "#{npc.name} picks nose:"
+          puts "Dunno about that, but #{evasive}".colorize(:light_blue)
+        end
       end
 
       def rude
-        index = NPC.information_hash[:curses].sample
-        binding.pry
+        curse = NPC.information_hash[:curses].sample
+        # binding.pry
         puts "#{npc.name} says:"
-        puts "#{NPC.information_hash[:curses][index]}".colorize(:red)
+        puts "#{curse}".colorize(:red)
       end
 
 
