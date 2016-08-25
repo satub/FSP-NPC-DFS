@@ -1,8 +1,18 @@
+
 module AI
 
   class CLI
 
   attr_accessor :npc, :hero
+
+    def choose_path
+      response = ""
+      unless response == "EXIT"
+        puts "AI test for devs only!"
+        self.send(gets.chomp)
+      end
+    end
+
 
     def initialize(npc = RandomNPC.new, hero = Hero.new)
       @npc = npc
@@ -10,8 +20,17 @@ module AI
     end
 
     def run
-      puts "You are #{hero.current_reputation} hero called #{hero.name}. You approach a #{npc.current_mood} person named #{npc.name} and say:"
+      greet
       decide(gets.chomp)
+    end
+
+    def autorun
+      greeting = @hero.capture_output {greeting}
+      binding.pry
+    end
+
+    def greet
+      puts "You are #{hero.current_reputation} hero called #{hero.name}. You approach a #{npc.current_mood} person named #{npc.name} and say:"
     end
 
     def decide(response)
