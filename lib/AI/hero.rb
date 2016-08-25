@@ -1,3 +1,5 @@
+require 'stringio'
+
 module AI
 
 class Hero
@@ -9,6 +11,15 @@ class Hero
     @reputation = reputation
     @hp = 100
     @mp = 100
+  end
+
+  def capture_output
+    current_stdout = $stdout
+    $stdout = StringIO.new
+    yield
+    $stdout.string
+  ensure
+    $stdout = current_stdout
   end
 
 end
