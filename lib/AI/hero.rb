@@ -13,7 +13,6 @@ class Hero
     @mp = 100
   end
 
-<<<<<<< HEAD
   def current_reputation
     case reputation
     when (0..20) then "a lower than dirt"
@@ -22,15 +21,15 @@ class Hero
     when (61..80) then "a more than decent"
     when (81..100) then "an obnoxiously perfect"
     end
-=======
+  end
+
   def capture_output
     current_stdout = $stdout
     $stdout = StringIO.new
     yield
-    $stdout.string
-  ensure
-    $stdout = current_stdout
->>>>>>> responsive-hero
+      $stdout.string
+    ensure
+      $stdout = current_stdout
   end
 
 end

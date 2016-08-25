@@ -13,7 +13,6 @@ module AI
       end
     end
 
-
     def initialize(npc = RandomNPC.new, hero = Hero.new)
       @npc = npc
       @hero = hero
