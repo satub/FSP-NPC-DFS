@@ -18,7 +18,7 @@ module MarkovResponder
   		master_string << seed_hash[seed].sample
   	end
 
-  	puts master_string + "?"
+  	master_string + "?"
 
   end
 
