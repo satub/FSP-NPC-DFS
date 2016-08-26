@@ -39,25 +39,25 @@ module AI
       al = AI::Analyze.new(response)
       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
       decision.decision(hero, npc, al) == 1 ? informative(response) : rude
-      end
+    end
 
-      def informative(response)
-        triggers = AI::Analyze.new(response).find_keywords
-        if !triggers.empty?
-          puts "#{npc.name} answers:"
-          triggers.each { |trigger| puts "#{trigger.capitalize}? #{NPC.information_hash[:information][trigger.to_sym]}".colorize(:green)}
-        else
-          evasive = NPC.information_hash[:smalltalk].sample
-          puts "#{npc.name} picks nose:"
-          puts "Dunno about that, but #{evasive}".colorize(:light_blue)
-        end
+    def informative(response)
+      triggers = AI::Analyze.new(response).find_keywords
+      if !triggers.empty?
+        puts "#{npc.name} answers:"
+        triggers.each { |trigger| puts "#{trigger.capitalize}? #{NPC.information_hash[:information][trigger.downcase.to_sym]}".colorize(:green)}
+      else
+        evasive = NPC.information_hash[:smalltalk].sample
+        puts "#{npc.name} picks nose:"
+        puts "Dunno about that, but #{evasive}".colorize(:light_blue)
       end
+    end
 
-      def rude
-        curse = NPC.information_hash[:curses].sample
-        puts "#{npc.name} says:"
-        puts "#{curse}".colorize(:red)
-      end
+    def rude
+      curse = NPC.information_hash[:curses].sample
+      puts "#{npc.name} says:"
+      puts "#{curse}".colorize(:red)
+    end
 
 
   end

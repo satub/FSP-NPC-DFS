@@ -14,9 +14,10 @@ module AI
       @whitelist = Highscore::Whitelist.load_file "lib/AI/NPC-AI/data/whitelist.txt"
       @text = Highscore::Content.new text, @blacklist
       # binding.pry
-      # @text.configure do
-      #   set :stemming, true
-      # end
+      @text.configure do
+        set :stemming, true
+        set :upper_case, 2
+      end
     end
 
     def find_keywords
@@ -24,9 +25,16 @@ module AI
       filter.matched(@text.content)
     end
 
+    def score
+      keywords = @text.content.keywords
+      keywords.rank.collect {|k| k.weight}.inject(0, :+)
+    end
+
     def whitelist_score
       keywords = @text.content.keywords(@whitelist) do
         set :multiplier, 10
+        set :stemming, true
+        set :upper_case, 1
       end
       keywords.rank.collect {|k| k.weight}.inject(0, :+)
     end
@@ -35,11 +43,6 @@ module AI
       filter = LanguageFilter::Filter.new(matchlist: @blacklist.words)
       # sanitized = filter.sanitize(@text.content).gsub(/\s\*{4}\s?/,"")
       filter.matched(@text.content).size * -50
-    end
-
-    def score
-      keywords = @text.content.keywords
-      keywords.rank.collect {|k| k.weight}.inject(0, :+)
     end
 
     def sum_score

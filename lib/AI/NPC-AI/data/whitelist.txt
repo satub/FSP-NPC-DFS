@@ -1,5 +1,5 @@
 please
-sir
+sir\w*
 madam
 ma'am
 honorable
@@ -12,5 +12,6 @@ may
 fate
 strong
 humility
-thank
+thank\w*
 excuse
+appreciate\w*
