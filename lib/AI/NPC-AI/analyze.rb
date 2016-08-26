@@ -44,6 +44,8 @@ module AI
 
     def sum_score
         @total = whitelist_score + blacklist_score + score
+        puts @total
+        @total
     end
 
   end
