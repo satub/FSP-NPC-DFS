@@ -9,6 +9,7 @@ module AI
     def initialize(text)
       match_array = Information.new
       @matches = match_array.answers.keys.collect {|key| key.to_s}
+      # @regex_matches = match_array.answers.keys.collect {|key| "#{key.to_s}\\w*"}
 
       @blacklist = Highscore::Blacklist.load_file "lib/AI/NPC-AI/data/blacklist.txt"
       @whitelist = Highscore::Whitelist.load_file "lib/AI/NPC-AI/data/whitelist.txt"
@@ -22,6 +23,8 @@ module AI
 
     def find_keywords
       filter = LanguageFilter::Filter.new(matchlist: @matches)
+      # filter2 = LanguageFilter::Filter.new(matchlist: @regex_matches)
+      # filter2.matched(@text.content)
       filter.matched(@text.content)
     end
 
