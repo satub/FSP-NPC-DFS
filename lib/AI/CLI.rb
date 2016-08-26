@@ -39,7 +39,6 @@ module AI
       al = AI::Analyze.new(response)
       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
       decision.decision(hero, npc, al) == 1 ? informative(response) : rude
-        #this needs to be abstracted!
       end
 
       def informative(response)

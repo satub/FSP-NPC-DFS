@@ -4,4 +4,4 @@ monsters => There are no such things, just angels.
 king => Asshole, like all the other blue-bloods.
 legend => There's a sword called ex-mortis with amazing powers.
 ex-mortis => The wielder of this sword will save the world.
-location => Some travelers speak of a ghost wielding a sword near a ruined lighthouse.
+located => Some travelers speak of a ghost wielding a sword near a ruined lighthouse.

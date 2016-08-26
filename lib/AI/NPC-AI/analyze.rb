@@ -3,6 +3,7 @@ module AI
   class Analyze
 
     attr_accessor :text, :blacklist, :whitelist, :matches
+    attr_reader :total
 
     #the blacklist and whitelist attributes should be fed as objects
     def initialize(text)
@@ -42,15 +43,7 @@ module AI
     end
 
     def sum_score
-        total = whitelist_score + blacklist_score + score
-        puts total
-      if total > 10
-        2
-      elsif total < 0
-        0
-      else
-        1
-      end
+        @total = whitelist_score + blacklist_score + score
     end
 
   end
