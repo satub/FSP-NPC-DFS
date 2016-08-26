@@ -24,9 +24,9 @@ module AI
     end
 
     def autorun
-      hero.persist_seeds
+      hero.persist_seeds("Where")
       greet
-      response = hero.create_question
+      response = hero.create_question("Where")
       puts response
       decide(response)
     end

@@ -19,8 +19,8 @@ class Hero
     @past_questions = []
   end
 
-  def persist_seeds
-    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt'))
+  def persist_seeds(first_word)
+    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt', first_word.length))
   end
 
 
@@ -43,8 +43,8 @@ class Hero
       $stdout = current_stdout
   end
 
-  def create_question
-    markov(self.seeds, "Where")
+  def create_question(first_word)
+    markov(self.seeds, first_word)
   end
 
 end

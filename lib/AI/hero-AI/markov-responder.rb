@@ -14,7 +14,7 @@ module MarkovResponder
     master_string = start_seed.dup if start_seed.frozen?
 
   	120.times do
-      master_string.length <= 5 ? seed = master_string[0..-1] : seed = master_string[-5..-1]
+      seed = master_string[-(first_word.length)..-1]
   		master_string << seed_hash[seed].sample
   	end
 
@@ -45,9 +45,9 @@ module MarkovResponder
   	seed_hash
   end
 
-  def collect_seeds(file_path, level = 6)
+  def collect_seeds(file_path, level)
     text = File.read(file_path)
-  	array = text.gsub("\n", " ").split("")
+  	array = text.split("")
   	seeds = array.collect.with_index do |letter, index|
   		if index < array.length - level + 1
   			#this conditional ensures that just the text is captured here.
