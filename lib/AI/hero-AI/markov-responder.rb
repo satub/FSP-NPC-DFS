@@ -1,3 +1,5 @@
+module AI
+
 module MarkovResponder
 
   #add: possibility for seed (maybe start CLI with seed)
@@ -5,24 +7,18 @@ module MarkovResponder
   #how to add in needed key when question format is already set
   #probably make a method that persists or saves the seed hash
 
-  def markov(file_path, level, char_length)
+  def markov(seed_hash, first_word)
 
-  	text = File.read(file_path)
+    starters = seed_hash.select{|k, v| k.include?(first_word)}
+  	start_seed = starters.keys.sample
+    master_string = start_seed.dup if start_seed.frozen?
 
-  	seed_hash = make_hash(collect_seeds(text, level))
-
-  	max_amt = seed_hash.max_by{|key, value| value.length}.flatten.length - 1
-
-  	start_seed = seed_hash.select {|key, array| array.length == max_amt}.keys.sample
-
-  	master_string = start_seed.dup if start_seed.frozen?
-
-  	(char_length - level).times do
-  		seed = master_string[-level..-1]
+  	120.times do
+      master_string.length <= 5 ? seed = master_string[0..-1] : seed = master_string[-5..-1]
   		master_string << seed_hash[seed].sample
   	end
 
-  	puts master_string
+  	puts master_string + "?"
 
   end
 
@@ -49,8 +45,9 @@ module MarkovResponder
   	seed_hash
   end
 
-  def collect_seeds(text, level)
-  	array = text.split("")
+  def collect_seeds(file_path, level = 6)
+    text = File.read(file_path)
+  	array = text.gsub("\n", " ").split("")
   	seeds = array.collect.with_index do |letter, index|
   		if index < array.length - level + 1
   			#this conditional ensures that just the text is captured here.
@@ -66,7 +63,6 @@ module MarkovResponder
   	seeds.compact! #removes the "nils" collect returns when i didn't operate on items
   end
 
-  markov(#game of thrones?, 8, 1000)
-
+end
 
 end

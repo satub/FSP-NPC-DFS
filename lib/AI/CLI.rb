@@ -24,11 +24,11 @@ module AI
     end
 
     def autorun
-      greeting = @hero.capture_output {greet}
-      binding.pry
-      #decide(?????)
-      #should i make a discrete array of possible responses in the hero model here? should i look into yet MORE AI to get this hero to make an answer
-      #i don't know so i give up!!
+      hero.persist_seeds
+      greet
+      response = hero.create_question
+      puts response
+      decide(response)
     end
 
     def greet

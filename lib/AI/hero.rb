@@ -1,9 +1,13 @@
 require 'stringio'
+require_relative 'hero-AI/markov-responder'
 
 module AI
 
 class Hero
-  attr_accessor :reputation, :hp, :mp
+
+  include MarkovResponder
+
+  attr_accessor :reputation, :hp, :mp, :seeds, :past_questions
   attr_reader :name
 
   def initialize(name = Faker::Name.name)
@@ -11,7 +15,14 @@ class Hero
     @reputation = rand(100)
     @hp = 100
     @mp = 100
+    @seeds = {}
+    @past_questions = []
   end
+
+  def persist_seeds
+    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt'))
+  end
+
 
   def current_reputation
     case reputation
@@ -30,6 +41,10 @@ class Hero
       $stdout.string
     ensure
       $stdout = current_stdout
+  end
+
+  def create_question
+    markov(self.seeds, "Where")
   end
 
 end
