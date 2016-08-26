@@ -43,14 +43,10 @@ module AI
       end
 
       def informative(response)
-        blaab = response.gsub(/\W+/,"").downcase
-        ##This keyword hunting needs to obviously be moved into the analyze class...why am I even typing it in here?
-        answers = NPC.information_hash[:information].keys.collect do |key_word|
-          blaab.scan(key_word.to_s)
-        end
-        if !answers.flatten.uniq.empty?
+        triggers = AI::Analyze.new(response).find_keywords
+        if !triggers.empty?
           puts "#{npc.name} answers:"
-          answers.flatten.uniq.each { |answer| puts "#{answer.to_sym.capitalize}? #{NPC.information_hash[:information][answer.to_sym]}".colorize(:green)}
+          triggers.each { |trigger| puts "#{trigger.capitalize}? #{NPC.information_hash[:information][trigger.to_sym]}".colorize(:green)}
         else
           evasive = NPC.information_hash[:smalltalk].sample
           puts "#{npc.name} picks nose:"

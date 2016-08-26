@@ -1,55 +1,58 @@
 module AI
 
-class Analyze
+  class Analyze
 
-  attr_accessor :text, :blacklist, :whitelist
+    attr_accessor :text, :blacklist, :whitelist, :matches
 
-  #the blacklist and whitelist attributes should be fed as objects
-  def initialize(text)
-    @text = Highscore::Content.new(text)
-    @blacklist = Highscore::Blacklist.load_file "lib/AI/NPC-AI/data/blacklist.txt"
-    @whitelist = Highscore::Whitelist.load_file "lib/AI/NPC-AI/data/whitelist.txt"
-  end
+    #the blacklist and whitelist attributes should be fed as objects
+    def initialize(text)
+      match_array = Information.new
+      @matches = match_array.answers.keys.collect {|key| key.to_s}
 
-  def whitelist_score
-    keywords = @text.content.keywords(@whitelist) do
-      set :multiplier, 10
+      @blacklist = Highscore::Blacklist.load_file "lib/AI/NPC-AI/data/blacklist.txt"
+      @whitelist = Highscore::Whitelist.load_file "lib/AI/NPC-AI/data/whitelist.txt"
+      @text = Highscore::Content.new text, @blacklist
+      # binding.pry
+      # @text.configure do
+      #   set :stemming, true
+      # end
     end
-    keywords.rank.collect {|k| k.weight}.inject(0, :+)
-  end
 
-  def blacklist_score
-    keywords = @text.content.keywords(@blacklist)
-    keywords.rank.collect {|k| k.weight}.inject(0, :+)
-  end
-
-  def score
-    keywords = @text.content.keywords
-    keywords.rank.collect {|k| k.weight}.inject(0, :+)
-  end
-
-  def sum_score
-    if whitelist_score > blacklist_score + score
-      2
-    elsif blacklist_score <= score
-      0
-    else
-      1
+    def find_keywords
+      filter = LanguageFilter::Filter.new(matchlist: @matches)
+      filter.matched(@text.content)
     end
+
+    def whitelist_score
+      keywords = @text.content.keywords(@whitelist) do
+        set :multiplier, 10
+      end
+      keywords.rank.collect {|k| k.weight}.inject(0, :+)
+    end
+
+    def blacklist_score
+      filter = LanguageFilter::Filter.new(matchlist: @blacklist.words)
+      # sanitized = filter.sanitize(@text.content).gsub(/\s\*{4}\s?/,"")
+      filter.matched(@text.content).size * -50
+    end
+
+    def score
+      keywords = @text.content.keywords
+      keywords.rank.collect {|k| k.weight}.inject(0, :+)
+    end
+
+    def sum_score
+        total = whitelist_score + blacklist_score + score
+        puts total
+      if total > 10
+        2
+      elsif total < 0
+        0
+      else
+        1
+      end
+    end
+
   end
 
 end
-
-end
-# al = Analyze.new("Excuse me, sir, could you please tell me where the lighthouse is?")
-# puts al.whitelist_score
-# puts al.blacklist_score
-# puts al.score
-# al2 = Analyze.new("hey babe, tell me where in the fuck the lighthouse is?")
-# puts al2.whitelist_score
-# puts al2.blacklist_score
-# puts al2.score
-# al3 = Analyze.new("oh fuck")
-# puts al3.whitelist_score
-# puts al3.blacklist_score
-# puts al3.score

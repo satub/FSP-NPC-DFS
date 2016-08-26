@@ -1,5 +1,7 @@
 require_relative "NPC-AI/analyze"
 require_relative "NPC-AI/decide"
+require_relative "NPC-AI/information"
+require_relative "NPC-AI/talk"
 
 
 module AI
@@ -16,42 +18,56 @@ module AI
     end
 
     def self.information_hash
-      {
-        :information => {
-          :lighthouse => "It's to the South.",
-          :monsters => "There are no such things, just angels.",
-          :king => "Asshole, like all the other blue-bloods."
-          },
-        :greetings => ["Hello", "Good day", "Well met"],
-        :curses => ["Bugger off, nuisance!", "You are not worthy of our time", "Begone, you foul slime-ball!", "Bitch, please"],
-        :smalltalk => ["Lovely weather, isn't it?", "Oh really?", "I'm afraid it is going to rain", "Have you tried the autumn apples?"],
-        :farewells => ["Take care!", "Goodbye!", "May light shine on your path"]
-      }
+      new_hash = {}
+      new_hash[:information] = Information.new.answers
+      new_hash.merge!(Talk.new.reactions)
     end
 
     def self.training_data
       training_data = [
-        [rand(66..100), rand(66..100), 2, 1],
-        [rand(66..100), rand(33..66),2, 1],
-        [rand(66..100), rand(0..33), 2, 1],
-        [rand(66..100), rand(66..100), 1, 1],
-        [rand(66..100), rand(33..66),1, 1],
-        [rand(66..100), rand(0..33), 1, 0],
-        [rand(66..100), rand(66..100), 0, 1],
-        [rand(66..100), rand(33..66),0, 0],
-        [rand(66..100), rand(0..33), 0, 0],
-        [rand(33..66), rand(66..100), 2, 1],
-        [rand(33..66), rand(33..66),2, 1],
-        [rand(33..66), rand(0..33), 2, 0],
-        [rand(33..66), rand(66..100), 0, 1],
-        [rand(33..66), rand(33..66),0, 0],
-        [rand(33..66), rand(0..33), 0, 0],
-        [rand(0..33), rand(66..100), 2, 1],
-        [rand(0..33), rand(33..66),2, 0],
-        [rand(0..33), rand(0..33), 2, 0],
-        [rand(0..33), rand(66..100), 0, 0],
-        [rand(0..33), rand(33..66),1, 0],
-        [rand(0..33), rand(0..33), 1, 0]]
+        [rand(66..100), rand(66..100), rand(15..50), 1],
+        [rand(66..100), rand(33..66),rand(15..50), 1],
+        [rand(66..100), rand(0..33), rand(15..50), 1],
+        [rand(66..100), rand(66..100), rand(2..15), 1],
+        [rand(66..100), rand(33..66), rand(2..15), 1],
+        [rand(66..100), rand(0..33), rand(2..15), 0],
+        [rand(66..100), rand(66..100), rand(-100..2), 1],
+        [rand(66..100), rand(33..66),rand(-100..2), 0],
+        [rand(66..100), rand(0..33), rand(-100..2), 0],
+        [rand(33..66), rand(66..100), rand(15..50), 1],
+        [rand(33..66), rand(33..66),rand(15..50), 1],
+        [rand(33..66), rand(0..33), rand(15..50), 0],
+        [rand(33..66), rand(66..100), rand(-100..2), 1],
+        [rand(33..66), rand(33..66),rand(-100..2), 0],
+        [rand(33..66), rand(0..33), rand(-100..2), 0],
+        [rand(0..33), rand(66..100), rand(15..50), 1],
+        [rand(0..33), rand(33..66),rand(15..50), 0],
+        [rand(0..33), rand(0..33), rand(15..50), 0],
+        [rand(0..33), rand(66..100), rand(-100..2), 0],
+        [rand(0..33), rand(33..66),rand(2..15), 0],
+        [rand(0..33), rand(0..33), rand(2..15), 0]]
+      # training_data = [
+      #   [rand(66..100), rand(66..100), 2, 1],
+      #   [rand(66..100), rand(33..66),2, 1],
+      #   [rand(66..100), rand(0..33), 2, 1],
+      #   [rand(66..100), rand(66..100), 1, 1],
+      #   [rand(66..100), rand(33..66),1, 1],
+      #   [rand(66..100), rand(0..33), 1, 0],
+      #   [rand(66..100), rand(66..100), 0, 1],
+      #   [rand(66..100), rand(33..66),0, 0],
+      #   [rand(66..100), rand(0..33), 0, 0],
+      #   [rand(33..66), rand(66..100), 2, 1],
+      #   [rand(33..66), rand(33..66),2, 1],
+      #   [rand(33..66), rand(0..33), 2, 0],
+      #   [rand(33..66), rand(66..100), 0, 1],
+      #   [rand(33..66), rand(33..66),0, 0],
+      #   [rand(33..66), rand(0..33), 0, 0],
+      #   [rand(0..33), rand(66..100), 2, 1],
+      #   [rand(0..33), rand(33..66),2, 0],
+      #   [rand(0..33), rand(0..33), 2, 0],
+      #   [rand(0..33), rand(66..100), 0, 0],
+      #   [rand(0..33), rand(33..66),1, 0],
+      #   [rand(0..33), rand(0..33), 1, 0]]
       end
 
       def self.attributes

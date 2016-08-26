@@ -7,6 +7,7 @@ require 'decisiontree'
 require 'highscore'
 require 'pry'
 require 'colorize'
+require 'language_filter'
 
 
 module AI

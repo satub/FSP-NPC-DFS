@@ -1,0 +1,11 @@
+##This file, nor the treetop gem for custom grammar is not used in the program at this moment
+
+grammar MyGrammar
+  rule greeting
+     ('hi' / 'hello' / 'well met' / 'good day' / 'good morning' / 'good evening') ' ' hero
+  end
+
+  rule hero
+    [\w]*
+  end
+end
