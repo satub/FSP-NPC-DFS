@@ -9,12 +9,12 @@ module MarkovResponder
 
   def markov(seed_hash, first_word)
 
-    starters = seed_hash.select{|k, v| k.include?(first_word)}
+    starters = seed_hash.select{|k, v| k[0..6].include?(first_word)}
   	start_seed = starters.keys.sample
     master_string = start_seed.dup if start_seed.frozen?
 
   	120.times do
-      seed = master_string[-(first_word.length)..-1]
+      seed = master_string[-10..-1]
   		master_string << seed_hash[seed].sample
   	end
 

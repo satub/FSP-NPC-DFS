@@ -20,7 +20,7 @@ class Hero
   end
 
   def persist_seeds(first_word)
-    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt', first_word.length))
+    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt', 10))
   end
 
 
@@ -45,6 +45,10 @@ class Hero
 
   def create_question(first_word)
     markov(self.seeds, first_word)
+  end
+
+  def improve_question(question)
+    binding.pry
   end
 
 end

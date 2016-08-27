@@ -23,12 +23,19 @@ module AI
       decide(gets.chomp)
     end
 
-    def autorun
-      hero.persist_seeds("Where")
+    def autorun(response = nil)
+      hero.persist_seeds("Where") if !hero.seeds
       greet
-      response = hero.create_question("Where")
+      if response == nil
+        response = hero.create_question("Where")
+      end
       puts response
       decide(response)
+      result = hero.capture_output {decide(response)}
+      until result.include?("answer")
+        new_response = hero.improve_question
+        autorun(new_response)
+      end
     end
 
     def greet
