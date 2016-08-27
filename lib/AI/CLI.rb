@@ -24,7 +24,7 @@ module AI
     end
 
     def autorun(response = nil)
-      hero.persist_seeds("Where") if !hero.seeds
+      hero.persist_seeds("Where") if hero.seeds.empty?
       greet
       if response == nil
         response = hero.create_question("Where")
@@ -32,10 +32,12 @@ module AI
       puts response
       decide(response)
       result = hero.capture_output {decide(response)}
-      until result.include?("answer")
-        new_response = hero.improve_question
+      while !result.include?("answer")
+        new_response = hero.improve_question(response, result)
+        hero.attempts += 1
         autorun(new_response)
       end
+      hero.results(response)
     end
 
     def greet
@@ -44,7 +46,7 @@ module AI
 
     def decide(response)
       al = AI::Analyze.new(response)
-      decision = AI::Decide.new(NPC.attributes, NPC.training_data)
+      decision = AI::Decide.new(NPC.attributes, NPC.training_data, :continuous)
       decision.decision(hero, npc, al) == 1 ? informative(response) : rude
       end
 
