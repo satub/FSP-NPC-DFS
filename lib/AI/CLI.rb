@@ -32,12 +32,13 @@ module AI
       puts response
       decide(response)
       result = hero.capture_output {decide(response)}
-      while !result.include?("answer")
+      if result.include?("answer")
+        hero.results(response)
+      else
         new_response = hero.improve_question(response, result)
         hero.attempts += 1
         autorun(new_response)
       end
-      hero.results(response)
     end
 
     def greet
