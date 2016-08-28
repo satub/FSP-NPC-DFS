@@ -1,13 +1,11 @@
 require 'stringio'
-require_relative 'hero-AI/markov-responder'
+require_relative 'hero-AI/herobot'
 
 module AI
 
 class Hero
 
-  include MarkovResponder
-
-  attr_accessor :reputation, :hp, :mp, :seeds, :past_words, :start, :attempts
+  attr_accessor :reputation, :hp, :mp, :past_words, :start, :attempts
   attr_reader :name
 
   def initialize(name = Faker::Name.name)
@@ -15,16 +13,11 @@ class Hero
     @reputation = rand(100)
     @hp = 100
     @mp = 100
-    @seeds = {}
     @past_words = []
     @attempts = 1
     @start = Time.now
+    @brain = AI::HeroBot.new
   end
-
-  def persist_seeds(first_word)
-    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt', 10))
-  end
-
 
   def current_reputation
     case reputation
@@ -45,16 +38,17 @@ class Hero
       $stdout = current_stdout
   end
 
-  def create_question(first_word)
-    markov(self.seeds, first_word)
+  def create_question(phrase)
+    @brain.talk(phrase)
   end
 
   def improve_question(question, response)
     populate_data(question, response)
     question_tree = DecisionTree::ID3Tree.new(["no_angry_response"], past_words, 0, :discrete)
     rating = 0
-    until rating > 0
-      new_question = create_question("Where")
+    new_question = ""
+    until rating > 0 && !new_question.include?("would")
+      new_question = create_question(response)
       rating = rate_question(new_question, question_tree)
     end
     new_question

@@ -8,6 +8,7 @@ require 'highscore'
 require 'pry'
 require 'colorize'
 require 'language_filter'
+require 'cleverbot-api'
 
 
 module AI

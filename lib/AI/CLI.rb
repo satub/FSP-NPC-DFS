@@ -24,14 +24,11 @@ module AI
     end
 
     def autorun(response = nil)
-      hero.persist_seeds("Where") if hero.seeds.empty?
       greet
-      if response == nil
-        response = hero.create_question("Where")
-      end
+      response = hero.create_question("Find it") if response == nil
       puts response
-      decide(response)
       result = hero.capture_output {decide(response)}
+      puts result
       if result.include?("answer")
         hero.results(response)
       else
