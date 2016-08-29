@@ -3,7 +3,7 @@ module AI
 
   class CLI
 
-  attr_accessor :npc, :hero
+  attr_accessor :npc, :hero, :action
 
     def choose_path
       response = ""
@@ -16,11 +16,33 @@ module AI
     def initialize(npc = RandomNPC.new, hero = Hero.new)
       @npc = npc
       @hero = hero
+      @action = "continue"
+    end
+
+    def swap_npc(npc = RandomNPC.new)
+      @npc = npc
     end
 
     def run
       greet
       decide(gets.chomp)
+    end
+
+    def gamerun
+      input = ""
+      greet
+      input = gets.chomp
+      until input.downcase == "exit"
+        decide(input)
+        if @action == "continue"
+          input = next_step
+        else
+          @action = "continue"
+          swap_npc
+          greet
+          input = gets.chomp
+        end
+      end
     end
 
     def autorun
@@ -33,6 +55,11 @@ module AI
 
     def greet
       puts "You are #{hero.current_reputation} hero called #{hero.name}. You approach a #{npc.current_mood} person named #{npc.name} and say:"
+    end
+
+    def next_step
+      puts "Anything else?"
+      gets.chomp
     end
 
     def decide(response)
@@ -57,6 +84,7 @@ module AI
       curse = NPC.information_hash[:curses].sample
       puts "#{npc.name} says:"
       puts "#{curse}".colorize(:red)
+      @action = "rejected"
     end
 
 
