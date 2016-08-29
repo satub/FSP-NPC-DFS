@@ -1,3 +1,5 @@
+require 'engtagger'
+
 module AI
 
 module MarkovResponder
@@ -61,6 +63,12 @@ module MarkovResponder
   		final_seed
   	end
   	seeds.compact! #removes the "nils" collect returns when i didn't operate on items
+  end
+
+  def tag_text
+    tgr = EngTagger.new
+    tagged = File.read('lib/AI/hero-AI/taggedGoT.txt')
+    binding.pry
   end
 
 end

@@ -1,5 +1,5 @@
 require 'stringio'
-require_relative 'hero-AI/markov-responder'
+require 'engtagger'
 
 module AI
 
@@ -20,11 +20,6 @@ class Hero
     @attempts = 1
     @start = Time.now
   end
-
-  def persist_seeds(first_word)
-    @seeds = make_hash(collect_seeds('lib/AI/hero-AI/got.txt', 10))
-  end
-
 
   def current_reputation
     case reputation
