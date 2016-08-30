@@ -41,7 +41,23 @@ class Hero
   end
 
   def create_question(first_word)
-    markov(self.seeds, first_word)
+    tgr = EngTagger.new
+    tagged = File.read('lib/AI/hero-AI/taggedGoT.txt')
+    binding.pry
+    #hypothetical question structure:
+    # 1. interjection (UH)
+    # 2. question word (WDT, WP, WPS, WRB)
+    # 3. verb/modal (MD)
+    # 4. noun/nouns( NN, NNS)
+    # 5. infinitive verb (VB)
+    # 6. Question mark
+    # 7. Noun (NN, NS)
+    # 8. adverb (RB)
+    # 9. Verb (VBD)
+    # 10. preposition/conjunction (TO, IN, CC)
+    # 11. Noun (NN, NS)
+
+
   end
 
   def improve_question(question, response)
