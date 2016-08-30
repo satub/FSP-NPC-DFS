@@ -3,7 +3,7 @@ module AI
 
   class CLI
 
-  attr_accessor :npc, :hero, :action
+  attr_accessor :npc, :hero, :action, :analysis
 
     def choose_path
       response = ""
@@ -32,17 +32,19 @@ module AI
       input = ""
       greet
       input = gets.chomp
-      until input.downcase == "exit"
-        decide(input)
+      until !/exit/.match(input.downcase).nil?
+        decide(input) unless @action == "move_on"
         if @action == "continue"
           input = next_step
         else
+          say_bye unless @action == "rejected"
           @action = "continue"
           swap_npc
           greet
           input = gets.chomp
         end
       end
+      say_bye
     end
 
     def autorun
@@ -58,25 +60,38 @@ module AI
     end
 
     def next_step
-      puts "Anything else?"
-      gets.chomp
+      puts "You say:"
+      input = gets.chomp
+      ##regex should be switched to analyze categorize and recognize a farewell function
+      !/bye(\W|\b)/.match(input.downcase).nil? ? @action = "move_on" : @action = "continue"
+      input
+    end
+
+    def say_bye
+      puts "#{npc.name} waves you off:"
+      puts "#{NPC.information_hash[:farewells].sample}".colorize(:light_blue)
     end
 
     def decide(response)
-      al = AI::Analyze.new(response)
+      @analysis = AI::Analyze.new(response)
       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
-      decision.decision(hero, npc, al) == 1 ? informative(response) : rude
+      puts @analysis.sum_score
+      decision.decision(hero, npc, @analysis) == 1 ? informative(response) : rude
     end
 
     def informative(response)
-      triggers = AI::Analyze.new(response).find_keywords
+      triggers = @analysis.find_keywords
+      # analysis.categorize
       if !triggers.empty?
         puts "#{npc.name} answers:"
         triggers.each { |trigger| puts "#{trigger.capitalize}? #{NPC.information_hash[:information][trigger.downcase.to_sym]}".colorize(:green)}
+        hero.inflate_ego(@analysis.sum_score/20) if @analysis.sum_score > 20
       else
         evasive = NPC.information_hash[:smalltalk].sample
         puts "#{npc.name} picks nose:"
         puts "Dunno about that, but #{evasive}".colorize(:light_blue)
+        hero.inflate_ego(@analysis.sum_score/30) if @analysis.sum_score > 30
+        hero.deflate_ego(@analysis.sum_score/10) if @analysis.sum_score < 0
       end
     end
 
@@ -85,6 +100,7 @@ module AI
       puts "#{npc.name} says:"
       puts "#{curse}".colorize(:red)
       @action = "rejected"
+      hero.deflate_ego(@analysis.sum_score/10) if @analysis.sum_score < 0
     end
 
 
