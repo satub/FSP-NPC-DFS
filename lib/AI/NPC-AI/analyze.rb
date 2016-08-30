@@ -2,7 +2,7 @@ module AI
 
   class Analyze
 
-    attr_accessor :text, :blacklist, :whitelist, :matches
+    attr_accessor :text, :blacklist, :whitelist, :matches, :sanitized
     attr_reader :total
 
     def initialize(text)
@@ -27,6 +27,17 @@ module AI
       filter.matched(@text.content)
     end
 
+    def sanitize_response
+      filter = LanguageFilter::Filter.new(matchlist: @blacklist.words)
+      @sanitized = filter.sanitize(@text.content).gsub("*", "")
+      @text2 = Highscore::Content.new @sanitized
+      # binding.pry
+      @text2.configure do
+        set :stemming, true
+        set :upper_case, 2
+      end
+    end
+
     def categorize
       ##This needs treetop for grammar and element recognition to work properly
 
@@ -46,7 +57,9 @@ module AI
     end
 
     def score
-      keywords = @text.content.keywords
+      sanitize_response
+      keywords = @text2.content.keywords
+      # binding.pry
       keywords.rank.collect {|k| k.weight}.inject(0, :+)
     end
 

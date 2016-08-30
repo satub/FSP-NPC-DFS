@@ -31,7 +31,7 @@ module AI
     def gamerun
       input = ""
       greet
-      input = gets.chomp
+      input = next_step
       until !/exit/.match(input.downcase).nil?
         decide(input) unless @action == "move_on"
         if @action == "continue"
@@ -41,7 +41,7 @@ module AI
           @action = "continue"
           swap_npc
           greet
-          input = gets.chomp
+          input = next_step
         end
       end
       say_bye
@@ -56,7 +56,7 @@ module AI
     end
 
     def greet
-      puts "You are #{hero.current_reputation} hero called #{hero.name}. You approach a #{npc.current_mood} person named #{npc.name} and say:"
+      puts "You are #{hero.current_reputation} hero called #{hero.name}. You approach a #{npc.current_mood} person named #{npc.name}."
     end
 
     def next_step
@@ -75,8 +75,8 @@ module AI
     def decide(response)
       @analysis = AI::Analyze.new(response)
       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
-      puts @analysis.sum_score
       decision.decision(hero, npc, @analysis) == 1 ? informative(response) : rude
+      puts "Your response score was: #{@analysis.total}"
     end
 
     def informative(response)
@@ -85,13 +85,13 @@ module AI
       if !triggers.empty?
         puts "#{npc.name} answers:"
         triggers.each { |trigger| puts "#{trigger.capitalize}? #{NPC.information_hash[:information][trigger.downcase.to_sym]}".colorize(:green)}
-        hero.inflate_ego(@analysis.sum_score/20) if @analysis.sum_score > 20
+        hero.inflate_ego(@analysis.total/20) if @analysis.total > 20
       else
         evasive = NPC.information_hash[:smalltalk].sample
         puts "#{npc.name} picks nose:"
         puts "Dunno about that, but #{evasive}".colorize(:light_blue)
-        hero.inflate_ego(@analysis.sum_score/30) if @analysis.sum_score > 30
-        hero.deflate_ego(@analysis.sum_score/10) if @analysis.sum_score < 0
+        hero.inflate_ego(@analysis.total/30) if @analysis.total> 30
+        hero.deflate_ego(@analysis.total/10) if @analysis.total < 0
       end
     end
 
@@ -100,7 +100,8 @@ module AI
       puts "#{npc.name} says:"
       puts "#{curse}".colorize(:red)
       @action = "rejected"
-      hero.deflate_ego(@analysis.sum_score/10) if @analysis.sum_score < 0
+      # binding.pry
+      hero.deflate_ego(@analysis.total/10) if @analysis.total < 0
     end
 
 
