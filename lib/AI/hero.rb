@@ -5,9 +5,7 @@ module AI
 
 class Hero
 
-  include MarkovResponder
-
-  attr_accessor :reputation, :hp, :mp, :seeds, :past_words, :start, :attempts
+  attr_accessor :reputation, :hp, :mp, :tag_hash, :past_words, :start, :attempts
   attr_reader :name
 
   def initialize(name = Faker::Name.name)
@@ -15,10 +13,33 @@ class Hero
     @reputation = rand(100)
     @hp = 100
     @mp = 100
-    @seeds = {}
+    @tag_hash = {}
     @past_words = []
     @attempts = 1
     @start = Time.now
+    build_tag_hash
+  end
+
+  def build_tag_hash
+    tagged = File.read('lib/AI/hero-AI/taggedGoT.txt')
+    ['uh', 'wdt', 'wp', 'wps', 'wrb', 'md', 'nn', 'nns', 'vb', 'rb', 'vbd', 'to', 'in', 'cc'].each do |key|
+      tag_hash[key] = tagged.scan(/<#{key}>(.*?)<\/#{key}>/).flatten
+    end
+    flatten_overlaps
+  end
+
+  def flatten_overlaps
+    tag_hash['questions'] = []
+    tag_hash['wdt'].each{|value| tag_hash['questions'] << value}
+    tag_hash['wps'].each{|value| tag_hash['questions'] << value}
+    tag_hash['wrb'].each{|value| tag_hash['questions'] << value}
+    tag_hash['wdt'].each{|value| tag_hash['questions'] << value}
+    tag_hash['nns'].each{|value| tag_hash['nn'] << value}
+    tag_hash['in'].each{|value| tag_hash['to'] << value}
+    tag_hash['cc'].each{|value| tag_hash['to'] << value}
+    tag_hash.each do |k, v|
+      v.map!{|word| word.downcase}
+    end
   end
 
   def current_reputation
@@ -40,32 +61,28 @@ class Hero
       $stdout = current_stdout
   end
 
-  def create_question(first_word)
-    tgr = EngTagger.new
-    tagged = File.read('lib/AI/hero-AI/taggedGoT.txt')
-    binding.pry
-    #hypothetical question structure:
-    # 1. interjection (UH)
-    # 2. question word (WDT, WP, WPS, WRB)
-    # 3. verb/modal (MD)
-    # 4. noun/nouns( NN, NNS)
-    # 5. infinitive verb (VB)
-    # 6. Question mark
-    # 7. Noun (NN, NS)
-    # 8. adverb (RB)
-    # 9. Verb (VBD)
-    # 10. preposition/conjunction (TO, IN, CC)
-    # 11. Noun (NN, NS)
-
-
+  def create_question
+    question = ""
+    question << tag_hash['uh'].sample.capitalize
+    question << ", "
+    question << tag_hash['questions'].sample + " "
+    question << tag_hash['md'].sample + " "
+    question << tag_hash['nn'].sample + " "
+    question << tag_hash['vb'].sample + "? "
+    question << tag_hash['nn'].sample.capitalize + " "
+    question << tag_hash['rb'].sample + " "
+    question << tag_hash['vbd'].sample + " "
+    question << tag_hash['to'].sample + " "
+    question << tag_hash['nn'].sample + "."
   end
+
 
   def improve_question(question, response)
     populate_data(question, response)
     question_tree = DecisionTree::ID3Tree.new(["no_angry_response"], past_words, 0, :discrete)
     rating = 0
     until rating > 0
-      new_question = create_question("Where")
+      new_question = create_question
       rating = rate_question(new_question, question_tree)
     end
     new_question

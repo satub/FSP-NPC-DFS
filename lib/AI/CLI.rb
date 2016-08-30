@@ -24,10 +24,9 @@ module AI
     end
 
     def autorun(response = nil)
-      hero.persist_seeds("Where") if hero.seeds.empty?
       greet
       if response == nil
-        response = hero.create_question("Where")
+        response = hero.create_question
       end
       puts response
       decide(response)
