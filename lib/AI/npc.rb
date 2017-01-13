@@ -7,7 +7,7 @@ require_relative "NPC-AI/talk"
 module AI
 
   class NPC
-    attr_reader :name, :personality, :information
+    attr_reader :name, :personality, :information_hash
 
   #instead of passing data in a hash, it would be better to read all this from a file/db, based on the character
   #name or/and personality traits. This would also allow for personalized balck and whitelists
