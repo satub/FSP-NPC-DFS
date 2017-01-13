@@ -15,10 +15,11 @@ module AI
       @text = Highscore::Content.new text, @blacklist
       # binding.pry
       @text.configure do
-        set :stemming, true
+      #  set :stemming, true
         set :upper_case, 2
       end
     end
+
 
     def find_keywords
       filter = LanguageFilter::Filter.new(matchlist: @matches)
@@ -33,7 +34,7 @@ module AI
       @text2 = Highscore::Content.new @sanitized
       # binding.pry
       @text2.configure do
-        set :stemming, true
+      #  set :stemming, true
         set :upper_case, 2
       end
     end
@@ -66,7 +67,7 @@ module AI
     def whitelist_score
       keywords = @text.content.keywords(@whitelist) do
         set :multiplier, 10
-        set :stemming, true
+      #  set :stemming, true
         set :upper_case, 1
       end
       keywords.rank.collect {|k| k.weight}.inject(0, :+)

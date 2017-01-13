@@ -1,15 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    bloomfilter-rb (2.1.1)
-      redis
     coderay (1.1.1)
     colorize (0.8.1)
     decisiontree (0.5.0)
-    faker (1.6.3)
+    engtagger (0.2.1)
+    faker (1.7.2)
       i18n (~> 0.5)
-    highscore (1.2.0)
-      bloomfilter-rb (>= 2.1.1)
+    highscore (1.2.1)
       whatlanguage (>= 1.0.0)
     i18n (0.7.0)
     language_filter (0.3.01)
@@ -18,8 +16,8 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    redis (3.3.1)
     slop (3.6.0)
+    stemmer (1.0.1)
     whatlanguage (1.0.6)
 
 PLATFORMS
@@ -28,10 +26,12 @@ PLATFORMS
 DEPENDENCIES
   colorize
   decisiontree
+  engtagger
   faker
   highscore
   language_filter
   pry
+  stemmer
 
 BUNDLED WITH
    1.12.5

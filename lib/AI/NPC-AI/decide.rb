@@ -5,10 +5,10 @@ module AI
     attr_reader :training_data, :attributes
     attr_accessor :decision
 
-    def initialize(attributes, training_data)
+    def initialize(attributes, training_data, mode)
       @attributes = attributes
       @training_data = training_data
-      dec_tree = DecisionTree::ID3Tree.new(attributes, training_data, 1, :continuous)
+      dec_tree = DecisionTree::ID3Tree.new(attributes, training_data, 1, mode)
       dec_tree.train
       @decision = dec_tree
     end

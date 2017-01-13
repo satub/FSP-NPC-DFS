@@ -28,6 +28,7 @@ module AI
       decide(gets.chomp)
     end
 
+# <<<<<<< HEAD
     def gamerun
       input = ""
       greet
@@ -47,12 +48,25 @@ module AI
       say_bye
     end
 
-    def autorun
-      hero.persist_seeds("Where")
+#     def autorun
+#       hero.persist_seeds("Where")
+# =======
+    def autorun(response = nil)
+# >>>>>>> improve-markov
       greet
-      response = hero.create_question("Where")
+      if response == nil
+        response = hero.create_question
+      end
       puts response
       decide(response)
+      result = hero.capture_output {decide(response)}
+      if result.include?("answer")
+        hero.results(response)
+      else
+        new_response = hero.improve_question(response, result)
+        hero.attempts += 1
+        autorun(new_response)
+      end
     end
 
     def greet
@@ -73,10 +87,17 @@ module AI
     end
 
     def decide(response)
+# <<<<<<< HEAD
       @analysis = AI::Analyze.new(response)
-      decision = AI::Decide.new(NPC.attributes, NPC.training_data)
+#       decision = AI::Decide.new(NPC.attributes, NPC.training_data)
+#       decision.decision(hero, npc, @analysis) == 1 ? informative(response) : rude
+#       puts "Your response score was: #{@analysis.total}"
+# =======
+      @analysis = AI::Analyze.new(response)
+      decision = AI::Decide.new(NPC.attributes, NPC.training_data, :continuous)
       decision.decision(hero, npc, @analysis) == 1 ? informative(response) : rude
-      puts "Your response score was: #{@analysis.total}"
+        puts "Your response score was: #{@analysis.total}"
+# >>>>>>> improve-markov
     end
 
     def informative(response)
